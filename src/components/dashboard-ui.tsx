@@ -18,8 +18,8 @@ export function DashboardUI({ code, loading }: DashboardUIProps) {
   }, [code]);
   
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center bg-white">
-      {loading && !code && (
+    <div className="relative flex h-full w-full flex-col items-center justify-center bg-white">
+      {loading && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm">
           <div className="uiverse">
               <div className="uiverse__loading">
@@ -30,13 +30,15 @@ export function DashboardUI({ code, loading }: DashboardUIProps) {
         </div>
       )}
       
-      <iframe
-        ref={iframeRef}
-        title="Generated Content"
-        className={`h-full w-full border-none bg-white transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}
-        sandbox="allow-scripts allow-same-origin"
-        srcDoc={code}
-      />
+      {code && (
+        <iframe
+          ref={iframeRef}
+          title="Generated Content"
+          className={`h-full w-full border-none bg-white transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}
+          sandbox="allow-scripts allow-same-origin"
+          srcDoc={code}
+        />
+      )}
     </div>
   );
 }
