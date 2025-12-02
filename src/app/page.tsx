@@ -13,7 +13,7 @@ type Device = "iphone" | "pixel";
 
 export default function Home() {
   const [device, setDevice] = useState<Device>("iphone");
-  const [prompt, setPrompt] = useState("A simple webpage with a hero section and a dark background.");
+  const [prompt, setPrompt] = useState("");
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +55,7 @@ export default function Home() {
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Enter a prompt to generate UI..."
         />
-        <Button onClick={handleGenerateCode} disabled={loading}>
+        <Button onClick={handleGenerateCode} disabled={loading || !prompt}>
           {loading ? "Generating..." : "Generate"}
         </Button>
       </div>
