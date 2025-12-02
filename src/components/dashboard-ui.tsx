@@ -81,7 +81,6 @@ export function DashboardUI() {
           />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
-        <div className="text-sm font-medium text-muted-foreground">My Wallet</div>
         <Button variant="ghost" size="icon" className="size-9">
           <Bell className="size-5" />
         </Button>

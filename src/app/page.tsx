@@ -54,9 +54,6 @@ export default function Home() {
           </PixelFrame>
         </div>
       </div>
-      <p className="mt-8 text-sm text-muted-foreground">
-        Created with Tailwind CSS & Next.js.
-      </p>
     </main>
   );
 }
