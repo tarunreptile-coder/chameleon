@@ -31,7 +31,7 @@ export function IPhoneFrame({ children, className }: IPhoneFrameProps) {
             </div>
           </div>
         </div>
-        <div className="dark h-full w-full">{children}</div>
+        {children}
       </div>
     </div>
   );
