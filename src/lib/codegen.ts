@@ -7,22 +7,13 @@ export async function generateCode(prompt: string): Promise<string> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        resource: "/generate-code",
-        path: "/generate-code",
-        httpMethod: "POST",
-        headers: {
-          "Accept": "*/*",
-          "Content-Type": "application/json"
-        },
-        queryStringParameters: null,
-        pathParameters: null,
-        stageVariables: null,
-        body: JSON.stringify({ "prompt": prompt }),
-        isBase64Encoded: false
+        "prompt": prompt
       }),
     });
 
     if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("Error response body:", errorBody);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
