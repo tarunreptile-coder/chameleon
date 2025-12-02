@@ -5,11 +5,28 @@ import { Button } from "@/components/ui/button";
 import { IPhoneFrame } from "@/components/iphone-frame";
 import { PixelFrame } from "@/components/pixel-frame";
 import { DashboardUI } from "@/components/dashboard-ui";
+import { Input } from "@/components/ui/input";
+import { generateCode } from "@/lib/codegen";
 
 type Device = "iphone" | "pixel";
 
 export default function Home() {
   const [device, setDevice] = useState<Device>("iphone");
+  const [prompt, setPrompt] = useState("A simple webpage with a hero section and a dark background.");
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerateCode = async () => {
+    setLoading(true);
+    try {
+      const generatedCode = await generateCode(prompt);
+      setCode(generatedCode);
+    } catch (error) {
+      console.error("Failed to generate code:", error);
+      // Optionally, show an error message to the user
+    }
+    setLoading(false);
+  };
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-secondary p-4">
@@ -30,6 +47,17 @@ export default function Home() {
         </Button>
       </div>
 
+      <div className="w-full max-w-md flex items-center gap-2 mb-4">
+        <Input 
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          placeholder="Enter a prompt to generate UI..."
+        />
+        <Button onClick={handleGenerateCode} disabled={loading}>
+          {loading ? "Generating..." : "Generate"}
+        </Button>
+      </div>
+
       <div className="relative flex h-[800px] w-[370px] items-center justify-center">
         <div
           className={`absolute transition-all duration-300 ease-in-out ${
@@ -39,7 +67,7 @@ export default function Home() {
           }`}
         >
           <IPhoneFrame>
-            <DashboardUI />
+            <DashboardUI code={code} loading={loading} />
           </IPhoneFrame>
         </div>
         <div
@@ -50,7 +78,7 @@ export default function Home() {
           }`}
         >
           <PixelFrame>
-            <DashboardUI />
+            <DashboardUI code={code} loading={loading} />
           </PixelFrame>
         </div>
       </div>
