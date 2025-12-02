@@ -1,4 +1,8 @@
-import type { ReactNode } from "react";
+
+"use client";
+
+import { useState, useEffect, type ReactNode } from "react";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Wifi, Battery, Signal } from "lucide-react";
 
@@ -8,6 +12,19 @@ type IPhoneFrameProps = {
 };
 
 export function IPhoneFrame({ children, className }: IPhoneFrameProps) {
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    const updateClock = () => {
+      setCurrentTime(format(new Date(), "h:mm aa EEE"));
+    };
+
+    updateClock(); // Set initial time
+    const timerId = setInterval(updateClock, 60000); // Update every minute
+
+    return () => clearInterval(timerId);
+  }, []);
+
   return (
     <div
       className={cn(
@@ -27,7 +44,7 @@ export function IPhoneFrame({ children, className }: IPhoneFrameProps) {
       <div className="h-full w-full overflow-hidden rounded-[40px] bg-white">
         <div className="absolute inset-x-0 top-0 z-10 px-6 pt-3">
           <div className="flex items-center justify-between text-black">
-            <span className="text-xs font-bold">9:41</span>
+            <span className="text-xs font-bold w-24">{currentTime}</span>
             <div className="absolute left-1/2 top-1.5 h-7 w-28 -translate-x-1/2 rounded-full bg-black"></div>
             <div className="flex items-center gap-1.5">
               <Signal size={14} />
