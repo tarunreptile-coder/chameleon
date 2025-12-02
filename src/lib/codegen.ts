@@ -47,19 +47,14 @@ export async function generateCode(prompt: string): Promise<string> {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            /* Global scrollbar styling for a cleaner look */
+            /* Hide scrollbar for Chrome, Safari and Opera */
             ::-webkit-scrollbar {
-              width: 5px;
+              display: none;
             }
-            ::-webkit-scrollbar-track {
-              background: #f1f1f1; 
-            }
-            ::-webkit-scrollbar-thumb {
-              background: #888; 
-              border-radius: 5px;
-            }
-            ::-webkit-scrollbar-thumb:hover {
-              background: #555; 
+            /* Hide scrollbar for IE, Edge and Firefox */
+            body {
+              -ms-overflow-style: none;  /* IE and Edge */
+              scrollbar-width: none;  /* Firefox */
             }
             ${css || ''}
           </style>
