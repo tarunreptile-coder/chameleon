@@ -1,3 +1,4 @@
+
 export async function generateCode(prompt: string): Promise<string> {
   try {
     const response = await fetch('https://76jkmxjuveo32yjqqggy5idtqe0byynx.lambda-url.us-east-1.on.aws/', {

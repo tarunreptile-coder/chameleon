@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -18,6 +19,7 @@ export default function Home() {
 
   const handleGenerateCode = async () => {
     setLoading(true);
+    setCode("");
     try {
       const generatedCode = await generateCode(prompt);
       setCode(generatedCode);

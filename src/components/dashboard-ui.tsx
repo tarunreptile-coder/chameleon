@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -35,7 +36,7 @@ export function DashboardUI({ code, loading }: DashboardUIProps) {
         ref={iframeRef}
         title="Generated Content"
         className="h-full w-full border-none"
-        sandbox="allow-scripts"
+        sandbox="allow-scripts allow-same-origin"
       />
     );
   }
