@@ -16,7 +16,7 @@ export function IPhoneFrame({ children, className }: IPhoneFrameProps) {
 
   useEffect(() => {
     const updateClock = () => {
-      setCurrentTime(format(new Date(), "h:mm aa EEE"));
+      setCurrentTime(format(new Date(), "h:mm aa"));
     };
 
     updateClock(); // Set initial time
