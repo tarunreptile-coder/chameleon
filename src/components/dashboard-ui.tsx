@@ -35,7 +35,7 @@ export function DashboardUI({ code, loading }: DashboardUIProps) {
       <iframe
         ref={iframeRef}
         title="Generated Content"
-        className="h-full w-full border-none"
+        className="h-full w-full border-none bg-white"
         sandbox="allow-scripts allow-same-origin"
       />
     );

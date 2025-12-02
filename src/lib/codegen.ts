@@ -20,9 +20,19 @@ export async function generateCode(prompt: string): Promise<string> {
 
     const data = await response.json();
     
-    // The actual HTML code is in a stringified JSON within the body property
-    const body = JSON.parse(data.body);
-    return body.code;
+    // The API returns a body property which is a stringified JSON.
+    // That stringified JSON contains the 'code' property.
+    if (data.body) {
+      const body = JSON.parse(data.body);
+      return body.code;
+    }
+
+    // Fallback for cases where the body is not nested.
+    if(data.code) {
+      return data.code;
+    }
+
+    return "";
 
   } catch (error) {
     console.error("Error fetching generated code:", error);
