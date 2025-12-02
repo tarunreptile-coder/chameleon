@@ -20,22 +20,68 @@ export async function generateCode(prompt: string): Promise<string> {
 
     const data = await response.json();
     
-    // The API returns a body property which is a stringified JSON.
-    // That stringified JSON contains the 'code' property.
-    if (data.body) {
-      const body = JSON.parse(data.body);
-      return body.code;
+    let codeData;
+    // Handle cases where the response is doubly stringified in a 'body' property
+    if (typeof data.body === 'string') {
+      try {
+        codeData = JSON.parse(data.body);
+      } catch (e) {
+        console.error("Failed to parse nested JSON from body", e);
+        throw new Error("Invalid response format from code generation API.");
+      }
+    } else {
+      codeData = data;
     }
 
-    // Fallback for cases where the body is not nested.
-    if(data.code) {
-      return data.code;
+    const { html, css, js } = codeData;
+
+    if (!html) {
+      console.error("API response missing 'html' content", codeData);
+      return "<p>Error: Generated code did not contain any HTML.</p>";
     }
 
-    return "";
+    const fullHtml = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-M">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            /* Global scrollbar styling for a cleaner look */
+            ::-webkit-scrollbar {
+              width: 5px;
+            }
+            ::-webkit-scrollbar-track {
+              background: #f1f1f1; 
+            }
+            ::-webkit-scrollbar-thumb {
+              background: #888; 
+              border-radius: 5px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+              background: #555; 
+            }
+            ${css || ''}
+          </style>
+      </head>
+      <body>
+          ${html}
+          <script>
+            ${js || ''}
+          </\'script>
+      </body>
+      </html>
+    `;
+
+    return fullHtml;
 
   } catch (error) {
     console.error("Error fetching generated code:", error);
-    throw error;
+    // Return an HTML error message to be displayed in the iframe
+    return `<div style="padding: 20px; font-family: sans-serif; color: red;">
+              <h2>Generation Failed</h2>
+              <p>Could not generate UI. Please try again.</p>
+              <p>Details: ${error instanceof Error ? error.message : String(error)}</p>
+            </div>`;
   }
 }
