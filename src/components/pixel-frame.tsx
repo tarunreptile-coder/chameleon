@@ -16,7 +16,7 @@ export function PixelFrame({ children, className }: PixelFrameProps) {
 
   useEffect(() => {
     const updateClock = () => {
-      setCurrentTime(format(new Date(), "h:mm"));
+      setCurrentTime(format(new Date(), "h:mm aa"));
     };
 
     updateClock(); // Set initial time
