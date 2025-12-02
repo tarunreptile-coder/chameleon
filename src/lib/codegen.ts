@@ -44,7 +44,7 @@ export async function generateCode(prompt: string): Promise<string> {
       <!DOCTYPE html>
       <html lang="en">
       <head>
-          <meta charset="UTF-M">
+          <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
             /* Global scrollbar styling for a cleaner look */
@@ -68,7 +68,7 @@ export async function generateCode(prompt: string): Promise<string> {
           ${html}
           <script>
             ${js || ''}
-          </\'script>
+          </script>
       </body>
       </html>
     `;
