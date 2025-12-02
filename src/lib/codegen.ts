@@ -33,12 +33,15 @@ export async function generateCode(prompt: string): Promise<string> {
       codeData = data;
     }
 
-    const { html, css, js } = codeData;
+    let { html, css, js } = codeData;
 
     if (!html) {
       console.error("API response missing 'html' content", codeData);
       return "<p>Error: Generated code did not contain any HTML.</p>";
     }
+
+    // Remove all instances of href="#" from the HTML
+    html = html.replace(/href="#"/g, '');
 
     const fullHtml = `
       <!DOCTYPE html>
