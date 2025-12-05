@@ -8,6 +8,13 @@ import { PixelFrame } from "@/components/pixel-frame";
 import { DashboardUI } from "@/components/dashboard-ui";
 import { Input } from "@/components/ui/input";
 import { generateCode } from "@/lib/codegen";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 type Device = "iphone" | "pixel";
 
@@ -32,23 +39,16 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen w-full flex-row items-center justify-center gap-16 bg-secondary p-4">
-      <div className="flex flex-col gap-8">
-        <div className="flex items-center gap-2 rounded-lg bg-background p-1 shadow-sm">
-          <Button
-            onClick={() => setDevice("iphone")}
-            variant={device === "iphone" ? "default" : "ghost"}
-            className="w-40"
-          >
-            iPhone 17 Pro
-          </Button>
-          <Button
-            onClick={() => setDevice("pixel")}
-            variant={device === "pixel" ? "default" : "ghost"}
-            className="w-40"
-          >
-            Google Pixel 9 Pro
-          </Button>
-        </div>
+      <div className="flex flex-col gap-4">
+        <Select value={device} onValueChange={(value) => setDevice(value as Device)}>
+          <SelectTrigger className="w-[340px]">
+            <SelectValue placeholder="Select a device" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="iphone">iPhone 17 Pro</SelectItem>
+            <SelectItem value="pixel">Google Pixel 9 Pro</SelectItem>
+          </SelectContent>
+        </Select>
 
         <div className="w-full max-w-md flex flex-col items-center gap-4">
           <Input 
