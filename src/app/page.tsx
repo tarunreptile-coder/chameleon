@@ -47,8 +47,8 @@ export default function Home() {
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
       <ResizablePanel defaultSize={50} maxSize={50}>
-        <div className="flex h-full items-center justify-center p-6">
-          <div className="relative w-full h-[10vh]">
+        <div className="flex h-full flex-col p-6">
+          <div className="relative w-full" style={{ height: '10vh' }}>
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -64,6 +64,16 @@ export default function Home() {
               <Send size={20} />
             </Button>
           </div>
+          {(loading || code) && (
+            <div className="flex-1 mt-4">
+              <iframe
+                srcDoc={code}
+                title="Generated Code"
+                className="w-full h-full border rounded-md"
+                sandbox="allow-scripts allow-same-origin"
+              />
+            </div>
+          )}
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
@@ -85,7 +95,7 @@ export default function Home() {
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "iphone"
                   ? "opacity-100 scale-100 z-10"
-                  : "opacity-0 scale-95 pointer-events-none -z-10"
+                  : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
               <IPhoneFrame>
@@ -96,7 +106,7 @@ export default function Home() {
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "pixel"
                   ? "opacity-100 scale-100 z-10"
-                  : "opacity-0 scale-95 pointer-events-none -z-10"
+                  : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
               <PixelFrame>
