@@ -104,7 +104,7 @@ export default function Home() {
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "iphone"
-                  ? "opacity-100 scale-100 z-10"
+                  ? "opacity-100 scale-100 z-0"
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
@@ -115,7 +115,7 @@ export default function Home() {
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "pixel"
-                  ? "opacity-100 scale-100 z-10"
+                  ? "opacity-100 scale-100 z-0"
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
