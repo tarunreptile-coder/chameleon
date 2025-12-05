@@ -44,10 +44,11 @@ export default function Home() {
       console.error("Failed to generate code:", error);
       // Optionally, show an error message to the user
     }
+    setPrompt("");
     setLoading(false);
   };
 
-  const showContent = loading || code;
+  const showContent = loading || submittedPrompt;
 
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
