@@ -12,6 +12,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -59,6 +60,8 @@ export default function Home() {
           <SelectContent>
             <SelectItem value="iphone">iPhone 17 Pro</SelectItem>
             <SelectItem value="pixel">Google Pixel 9 Pro</SelectItem>
+            <SelectSeparator />
+            <SelectItem value="add-device" disabled>Add device</SelectItem>
           </SelectContent>
         </Select>
         <div className="relative flex h-[800px] w-[370px] items-center justify-center">
@@ -70,7 +73,7 @@ export default function Home() {
             }`}
           >
             <IPhoneFrame>
-              <DashboardUI code={code} loading={loading} />
+              {code || loading ? <DashboardUI code={code} loading={loading} /> : null}
             </IPhoneFrame>
           </div>
           <div
@@ -81,7 +84,7 @@ export default function Home() {
             }`}
           >
             <PixelFrame>
-              <DashboardUI code={code} loading={loading} />
+              {code || loading ? <DashboardUI code={code} loading={loading} /> : null}
             </PixelFrame>
           </div>
         </div>
