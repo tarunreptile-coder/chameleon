@@ -59,20 +59,20 @@ export default function Home() {
           )}
         >
           {showContent && (
-            <div className="flex-1 mb-4 p-4 border rounded-md bg-muted/50">
+            <div className="flex-1 mb-4 p-4">
               <p className="text-sm text-muted-foreground mb-2">Submitted Prompt:</p>
               <p className="text-base">{submittedPrompt}</p>
             </div>
           )}
           <div
             className="relative w-full"
-            style={!showContent ? { height: '10vh' } : {}}
+            style={!showContent ? { height: '10vh' } : { height: '24vh' }}
           >
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Enter a prompt to generate UI..."
-              className={cn("pr-16 text-lg resize-none", showContent ? "h-24" : "h-full")}
+              className={cn("pr-16 text-lg resize-none h-full")}
             />
             <Button
               onClick={handleGenerateCode}
