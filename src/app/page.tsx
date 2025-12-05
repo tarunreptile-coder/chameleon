@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IPhoneFrame } from "@/components/iphone-frame";
 import { PixelFrame } from "@/components/pixel-frame";
 import { DashboardUI } from "@/components/dashboard-ui";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { generateCode } from "@/lib/codegen";
 import {
@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Send } from "lucide-react";
 
 type Device = "iphone" | "pixel";
 
@@ -41,15 +42,23 @@ export default function Home() {
   return (
     <main className="flex min-h-screen w-full flex-row items-center justify-center gap-16 bg-secondary p-4">
       <div className="flex w-full max-w-md flex-col items-center gap-4">
-        <Input 
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter a prompt to generate UI..."
-          className="h-12 text-lg"
-        />
-        <Button onClick={handleGenerateCode} disabled={loading || !prompt} className="w-full h-12 text-lg">
-          {loading ? "Generating..." : "Generate"}
-        </Button>
+        <div className="relative w-full">
+          <Textarea 
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Enter a prompt to generate UI..."
+            className="h-28 pr-16 text-lg resize-none"
+            rows={3}
+          />
+          <Button 
+            onClick={handleGenerateCode} 
+            disabled={loading || !prompt} 
+            className="absolute bottom-3 right-3"
+            size="icon"
+          >
+            <Send size={20} />
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col items-center gap-4">
