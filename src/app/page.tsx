@@ -48,7 +48,7 @@ export default function Home() {
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
       <ResizablePanel defaultSize={50} maxSize={50}>
         <div className="flex h-full items-center justify-center p-6">
-          <div className="relative w-full h-full flex flex-col justify-center">
+          <div className="relative w-full h-[30vh]">
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
