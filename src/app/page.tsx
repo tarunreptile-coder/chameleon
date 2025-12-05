@@ -31,33 +31,36 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-secondary p-4">
-      <div className="mb-8 flex items-center gap-2 rounded-lg bg-background p-1 shadow-sm">
-        <Button
-          onClick={() => setDevice("iphone")}
-          variant={device === "iphone" ? "default" : "ghost"}
-          className="w-40"
-        >
-          iPhone 17 Pro
-        </Button>
-        <Button
-          onClick={() => setDevice("pixel")}
-          variant={device === "pixel" ? "default" : "ghost"}
-          className="w-40"
-        >
-          Google Pixel 9 Pro
-        </Button>
-      </div>
+    <main className="flex min-h-screen w-full flex-row items-center justify-center gap-16 bg-secondary p-4">
+      <div className="flex flex-col gap-8">
+        <div className="flex items-center gap-2 rounded-lg bg-background p-1 shadow-sm">
+          <Button
+            onClick={() => setDevice("iphone")}
+            variant={device === "iphone" ? "default" : "ghost"}
+            className="w-40"
+          >
+            iPhone 17 Pro
+          </Button>
+          <Button
+            onClick={() => setDevice("pixel")}
+            variant={device === "pixel" ? "default" : "ghost"}
+            className="w-40"
+          >
+            Google Pixel 9 Pro
+          </Button>
+        </div>
 
-      <div className="w-full max-w-md flex items-center gap-2 mb-4">
-        <Input 
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Enter a prompt to generate UI..."
-        />
-        <Button onClick={handleGenerateCode} disabled={loading || !prompt}>
-          {loading ? "Generating..." : "Generate"}
-        </Button>
+        <div className="w-full max-w-md flex flex-col items-center gap-4">
+          <Input 
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Enter a prompt to generate UI..."
+            className="h-12 text-lg"
+          />
+          <Button onClick={handleGenerateCode} disabled={loading || !prompt} className="w-full h-12 text-lg">
+            {loading ? "Generating..." : "Generate"}
+          </Button>
+        </div>
       </div>
 
       <div className="relative flex h-[800px] w-[370px] items-center justify-center">

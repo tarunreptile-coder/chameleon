@@ -28,7 +28,7 @@ export function PixelFrame({ children, className }: PixelFrameProps) {
   return (
     <div
       className={cn(
-        "relative mx-auto h-[800px] w-[370px] rounded-[30px] border-[10px] border-neutral-800 bg-neutral-950 shadow-2xl",
+        "relative mx-auto h-[800px] w-[370px] rounded-[30px] border-[10px] border-neutral-800 bg-neutral-950 shadow-2xl pb-[35px]",
         className
       )}
     >
