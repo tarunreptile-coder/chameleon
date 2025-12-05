@@ -29,12 +29,14 @@ type Device = "iphone" | "pixel";
 export default function Home() {
   const [device, setDevice] = useState<Device>("iphone");
   const [prompt, setPrompt] = useState("");
+  const [submittedPrompt, setSubmittedPrompt] = useState("");
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleGenerateCode = async () => {
     setLoading(true);
     setCode("");
+    setSubmittedPrompt(prompt);
     try {
       const generatedCode = await generateCode(prompt);
       setCode(generatedCode);
@@ -45,7 +47,7 @@ export default function Home() {
     setLoading(false);
   };
 
-  const showCode = loading || code;
+  const showContent = loading || code;
 
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
@@ -53,28 +55,24 @@ export default function Home() {
         <div
           className={cn(
             "flex h-full flex-col p-6",
-            !showCode && "items-center justify-center"
+            !showContent && "items-center justify-center"
           )}
         >
-          {showCode && (
-            <div className="flex-1 mb-4">
-              <iframe
-                srcDoc={code}
-                title="Generated Code"
-                className="w-full h-full border rounded-md"
-                sandbox="allow-scripts allow-same-origin"
-              />
+          {showContent && (
+            <div className="flex-1 mb-4 p-4 border rounded-md bg-muted/50">
+              <p className="text-sm text-muted-foreground mb-2">Submitted Prompt:</p>
+              <p className="text-base">{submittedPrompt}</p>
             </div>
           )}
           <div
             className="relative w-full"
-            style={!showCode ? { height: '10vh' } : {}}
+            style={!showContent ? { height: '10vh' } : {}}
           >
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Enter a prompt to generate UI..."
-              className={cn("pr-16 text-lg resize-none", showCode ? "h-24" : "h-full")}
+              className={cn("pr-16 text-lg resize-none", showContent ? "h-24" : "h-full")}
             />
             <Button
               onClick={handleGenerateCode}
