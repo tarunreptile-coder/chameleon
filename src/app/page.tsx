@@ -22,6 +22,7 @@ import {
   ResizablePanelGroup,
   ResizableHandle,
 } from "@/components/ui/resizable";
+import { cn } from "@/lib/utils";
 
 type Device = "iphone" | "pixel";
 
@@ -44,16 +45,36 @@ export default function Home() {
     setLoading(false);
   };
 
+  const showCode = loading || code;
+
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
       <ResizablePanel defaultSize={50} maxSize={50}>
-        <div className="flex h-full flex-col p-6">
-          <div className="relative w-full" style={{ height: '10vh' }}>
+        <div
+          className={cn(
+            "flex h-full flex-col p-6",
+            !showCode && "items-center justify-center"
+          )}
+        >
+          {showCode && (
+            <div className="flex-1 mb-4">
+              <iframe
+                srcDoc={code}
+                title="Generated Code"
+                className="w-full h-full border rounded-md"
+                sandbox="allow-scripts allow-same-origin"
+              />
+            </div>
+          )}
+          <div
+            className="relative w-full"
+            style={!showCode ? { height: '10vh' } : {}}
+          >
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Enter a prompt to generate UI..."
-              className="h-full pr-16 text-lg resize-none"
+              className={cn("pr-16 text-lg resize-none", showCode ? "h-24" : "h-full")}
             />
             <Button
               onClick={handleGenerateCode}
@@ -64,16 +85,6 @@ export default function Home() {
               <Send size={20} />
             </Button>
           </div>
-          {(loading || code) && (
-            <div className="flex-1 mt-4">
-              <iframe
-                srcDoc={code}
-                title="Generated Code"
-                className="w-full h-full border rounded-md"
-                sandbox="allow-scripts allow-same-origin"
-              />
-            </div>
-          )}
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
