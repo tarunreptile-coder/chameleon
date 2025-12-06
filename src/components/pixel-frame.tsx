@@ -34,7 +34,7 @@ export function PixelFrame({ children, className }: PixelFrameProps) {
     >
       <div className="absolute -right-1 top-32 h-24 w-1 rounded-r-lg bg-neutral-800"></div>
       <div className="h-full w-full overflow-hidden rounded-[20px] bg-white">
-        <div className="absolute inset-x-0 top-0 z-10 px-4 pt-2">
+        <div className="absolute inset-x-0 top-0 z-10 px-4 pt-2 pb-5">
             <div className="flex items-center justify-between text-black">
                 <span className="text-xs font-bold">{currentTime}</span>
                 <div className="absolute left-1/2 top-4 h-3 w-3 -translate-x-1/2 rounded-full bg-black"></div>

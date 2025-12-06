@@ -42,7 +42,7 @@ export function IPhoneFrame({ children, className }: IPhoneFrameProps) {
       <div className="absolute -left-[10px] top-[7.25rem] h-8 w-[6px] rounded-r-md bg-neutral-800" />
       
       <div className="h-full w-full overflow-hidden rounded-[40px] bg-white">
-        <div className="absolute inset-x-0 top-0 z-10 px-6 py-[10px] bg-white">
+        <div className="absolute inset-x-0 top-0 z-10 px-6 py-[10px]">
           <div className="flex items-center justify-between text-black">
             <span className="text-xs font-bold w-24">{currentTime}</span>
             <div className="absolute left-1/2 top-1.5 h-7 w-28 -translate-x-1/2 rounded-full bg-black"></div>
