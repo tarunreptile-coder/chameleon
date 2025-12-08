@@ -8,6 +8,7 @@ import { DashboardUI } from "@/components/dashboard-ui";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { generateCode } from "@/lib/codegen";
+import { improvePrompt } from "@/ai/flows/improve-prompt-flow";
 import {
   Select,
   SelectContent,
@@ -16,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Send } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 import {
   ResizablePanel,
   ResizablePanelGroup,
@@ -32,6 +33,7 @@ export default function Home() {
   const [submittedPrompt, setSubmittedPrompt] = useState("");
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isImproving, setIsImproving] = useState(false);
 
   const handleGenerateCode = async () => {
     setLoading(true);
@@ -47,8 +49,20 @@ export default function Home() {
     setPrompt("");
     setLoading(false);
   };
+  
+  const handleImprovePrompt = async () => {
+    setIsImproving(true);
+    try {
+      const improved = await improvePrompt(prompt);
+      setPrompt(improved);
+    } catch (error) {
+      console.error("Failed to improve prompt:", error);
+    }
+    setIsImproving(false);
+  };
 
   const showContent = loading || submittedPrompt;
+  const showImproveButton = prompt.length > 0 && !prompt.includes('\n');
 
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
@@ -75,6 +89,18 @@ export default function Home() {
               placeholder="Enter a prompt to generate UI..."
               className={cn("pr-16 text-lg resize-none h-full")}
             />
+            {showImproveButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleImprovePrompt}
+                disabled={isImproving}
+                className="absolute bottom-16 left-3"
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                {isImproving ? "Improving..." : "Improve prompt"}
+              </Button>
+            )}
             <Button
               onClick={handleGenerateCode}
               disabled={loading || !prompt}
@@ -104,7 +130,7 @@ export default function Home() {
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "iphone"
-                  ? "opacity-100 scale-100 z-0"
+                  ? "opacity-100 scale-100 -z-[1]"
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
@@ -115,7 +141,7 @@ export default function Home() {
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "pixel"
-                  ? "opacity-100 scale-100 z-0"
+                  ? "opacity-100 scale-100 -z-[1]"
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
