@@ -87,6 +87,13 @@
   }
 }
 
+@layer components {
+  .btn-gradient {
+    background-image: linear-gradient(to right, #ff8c00, #ff0080);
+    color: white;
+  }
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;

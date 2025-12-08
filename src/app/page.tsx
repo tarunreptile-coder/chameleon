@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Send, Sparkles } from "lucide-react";
+import { ArrowRight, Send, Sparkles } from "lucide-react";
 import {
   ResizablePanel,
   ResizablePanelGroup,
@@ -105,9 +105,14 @@ export default function Home() {
               <Button
                 onClick={handleGenerateCode}
                 disabled={loading || !prompt || (showImproveButton && !allowGenerate)}
-                size="icon"
+                className={cn(
+                  (loading || !prompt || (showImproveButton && !allowGenerate)) 
+                    ? "bg-gray-400" 
+                    : "btn-gradient",
+                  "text-white px-4 py-2 rounded-full flex items-center gap-2"
+                )}
               >
-                <Send size={20} />
+                Prototype with AI <ArrowRight size={20} />
               </Button>
             </div>
           </div>
