@@ -89,26 +89,26 @@ export default function Home() {
               placeholder="Enter a prompt to generate UI..."
               className={cn("pr-16 text-lg resize-none h-full")}
             />
-            {showImproveButton && (
+            <div className="absolute bottom-3 right-3 flex items-center gap-2">
+              {showImproveButton && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleImprovePrompt}
+                  disabled={isImproving}
+                >
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  {isImproving ? "Improving..." : "Improve prompt"}
+                </Button>
+              )}
               <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleImprovePrompt}
-                disabled={isImproving}
-                className="absolute bottom-16 left-3"
+                onClick={handleGenerateCode}
+                disabled={loading || !prompt}
+                size="icon"
               >
-                <Sparkles className="mr-2 h-4 w-4" />
-                {isImproving ? "Improving..." : "Improve prompt"}
+                <Send size={20} />
               </Button>
-            )}
-            <Button
-              onClick={handleGenerateCode}
-              disabled={loading || !prompt}
-              className="absolute bottom-3 right-3"
-              size="icon"
-            >
-              <Send size={20} />
-            </Button>
+            </div>
           </div>
         </div>
       </ResizablePanel>
@@ -157,4 +157,3 @@ export default function Home() {
     </ResizablePanelGroup>
   );
 }
-
