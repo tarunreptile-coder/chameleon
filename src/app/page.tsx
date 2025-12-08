@@ -115,22 +115,24 @@ export default function Home() {
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={50}>
         <main className="flex h-full flex-col items-center justify-center gap-4 bg-secondary p-4">
-          <Select value={device} onValueChange={(value) => setDevice(value as Device)}>
-            <SelectTrigger className="w-[370px]">
-              <SelectValue placeholder="Select a device" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="iphone">iPhone 17 Pro</SelectItem>
-              <SelectItem value="pixel">Google Pixel 9 Pro</SelectItem>
-              <SelectSeparator />
-              <SelectItem value="add-device" disabled>Add device</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="absolute top-10 z-20">
+            <Select value={device} onValueChange={(value) => setDevice(value as Device)}>
+              <SelectTrigger className="w-[370px]">
+                <SelectValue placeholder="Select a device" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="iphone">iPhone 17 Pro</SelectItem>
+                <SelectItem value="pixel">Google Pixel 9 Pro</SelectItem>
+                <SelectSeparator />
+                <SelectItem value="add-device" disabled>Add device</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="relative flex h-[800px] w-[370px] items-center justify-center">
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "iphone"
-                  ? "opacity-100 scale-100 -z-[1]"
+                  ? "opacity-100 scale-100 -z-[999]"
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
@@ -141,7 +143,7 @@ export default function Home() {
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "pixel"
-                  ? "opacity-100 scale-100 -z-[1]"
+                  ? "opacity-100 scale-100 -z-[999]"
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
@@ -155,3 +157,4 @@ export default function Home() {
     </ResizablePanelGroup>
   );
 }
+
