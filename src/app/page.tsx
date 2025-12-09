@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { generateCode } from "@/lib/codegen";
 import { improvePrompt } from "@/ai/flows/improve-prompt-flow";
 import { exportToCms } from "@/ai/flows/export-to-cms-flow";
+import { type ExportSection } from "@/ai/flows/export-to-cms-flow.types";
 import {
   Select,
   SelectContent,
@@ -89,38 +90,35 @@ export default function Home() {
     try {
         const parser = new DOMParser();
         const doc = parser.parseFromString(code, 'text/html');
-        const appContainer = doc.querySelector('.app-container');
-        const sections = appContainer ? Array.from(appContainer.querySelectorAll('section')) : [];
-        const sectionIds = sections.reverse().map(section => section.id).filter(id => id);
+        const appContainer = doc.querySelector('.app-container') || doc.body;
+        const sections = Array.from(appContainer.querySelectorAll('section'));
 
-        if (sectionIds.length === 0) {
-            // Fallback for when there are no sections with IDs.
-            const sectionCount = (code.match(/<section/g) || []).length;
-            if (sectionCount > 0 && submittedPrompt !== "Charity App Template") {
-                const fallbackIds = Array.from({ length: sectionCount }, (_, i) => `${submittedPrompt.split('\n')[0] || "Generated Content"} - Section ${i + 1}`);
-                sectionIds.push(...fallbackIds.reverse());
-            }
-        }
+        const exportSections: ExportSection[] = sections.map(section => {
+            const id = section.id || `section-${Math.random().toString(36).substring(2, 9)}`;
+            const nameElement = section.querySelector('h1, h2, h3, h4, h5, h6');
+            const name = nameElement ? nameElement.textContent || 'Untitled Section' : 'Untitled Section';
+            const imageElement = section.querySelector('img');
+            const imageUrl = imageElement ? imageElement.src : '';
+            const htmlBody = section.innerHTML;
 
-        if (sectionIds.length > 0) {
-            const result = await exportToCms({ sectionIds });
+            return { id, name, imageUrl, htmlBody };
+        }).reverse();
+        
+
+        if (exportSections.length > 0) {
+            const result = await exportToCms({ sections: exportSections });
             setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
         } else {
-            // If there are still no section IDs to process, we can skip the API call.
-            // For example, when "Testing UI" is shown and it has no sections.
-            // We can directly show a generic link or a message.
              setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
         }
 
         setExportStep(2); // Exporting Content...
         
-        // Simulate some processing time for the second step
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
 
     } catch (error) {
         console.error("Failed to export to CMS:", error);
-        // Handle error state in UI if needed
     } finally {
         setIsExporting(false);
         setExportStep(0);
@@ -263,3 +261,5 @@ export default function Home() {
     </ResizablePanelGroup>
   );
 }
+
+    
