@@ -107,9 +107,9 @@ export default function Home() {
 
         if (exportSections.length > 0) {
             const result = await exportToCms({ sections: exportSections });
-            setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
+            setCmsLink(`https://app.onreptile.com/publication/c2e0bca5-4df0-4641-a211-5cf280116757`);
         } else {
-             setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
+             setCmsLink(`https://app.onreptile.com/publication/c2e0bca5-4df0-4641-a211-5cf280116757`);
         }
 
         setExportStep(2); // Exporting Content...
