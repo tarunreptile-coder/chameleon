@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
 
-type Device = "iphone" | "pixel";
+type Device = "iphone" | "pixel" | "testing";
 
 export default function Home() {
   const [device, setDevice] = useState<Device>("iphone");
@@ -118,6 +118,8 @@ export default function Home() {
     "Exporting Content...",
   ];
 
+  const isTestingUi = device === "testing";
+
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
       <ResizablePanel defaultSize={50} maxSize={50}>
@@ -197,12 +199,13 @@ export default function Home() {
               <SelectContent>
                 <SelectItem value="iphone">iPhone 17 Pro</SelectItem>
                 <SelectItem value="pixel">Google Pixel 9 Pro</SelectItem>
+                <SelectItem value="testing">Testing UI</SelectItem>
                 <SelectSeparator />
                 <SelectItem value="add-device" disabled>Add device</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className="relative flex h-[800px] w-[370px] items-center justify-center">
+          <div className={cn("relative flex items-center justify-center", !isTestingUi && "h-[800px] w-[370px]")}>
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "iphone"
@@ -225,6 +228,11 @@ export default function Home() {
                 <DashboardUI code={code} loading={loading} />
               </PixelFrame>
             </div>
+            {isTestingUi && (
+              <div className="h-full w-full rounded-lg border bg-background shadow-sm overflow-hidden">
+                <DashboardUI code={code} loading={loading} />
+              </div>
+            )}
           </div>
            {code && (
             <Button variant="outline" onClick={handleExport} disabled={isExporting}>
