@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ArrowRight, Send, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Upload } from "lucide-react";
 import {
   ResizablePanel,
   ResizablePanelGroup,
@@ -62,7 +62,7 @@ export default function Home() {
   };
 
   const showContent = loading || submittedPrompt;
-  const showImproveButton = prompt.length > 0 && prompt.length <= 150 && !prompt.includes('\n');
+  const showImproveButton = prompt.length > 0 && !prompt.includes('\n');
   const allowGenerate = prompt.length > 150;
 
   return (
@@ -158,6 +158,12 @@ export default function Home() {
               </PixelFrame>
             </div>
           </div>
+           {code && (
+            <Button variant="outline">
+              <Upload className="mr-2 h-4 w-4" />
+              Export to CMS
+            </Button>
+          )}
         </main>
       </ResizablePanel>
     </ResizablePanelGroup>
