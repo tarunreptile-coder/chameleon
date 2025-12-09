@@ -68,16 +68,46 @@ export default function Home() {
     setIsExporting(true);
     setExportStep(1); // Generating folders....
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setExportStep(2); // Exporting Content...
+    try {
+        const response = await fetch('https://app.onreptile.com/api/ContentEntity/Post?organizationId=17877abd-6fdd-4103-b672-c97a429237f7', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "name": submittedPrompt.split('\n')[0] || "Generated Content",
+                "contentEntityType": {
+                    "entityTypeId": 3,
+                    "entityTypeName": "Issue"
+                },
+                "parentId": "c2e0bca5-4df0-4641-a211-5cf280116757"
+            }),
+        });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsExporting(false);
-    setExportStep(0);
-    setCmsLink("https://example-cms.com/project/123");
+        if (!response.ok) {
+            throw new Error(`API call failed with status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        const newContentId = result.id;
+        
+        setExportStep(2); // Exporting Content...
+        
+        // Simulate some processing time for the second step
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        setCmsLink(`https://app.onreptile.com/content-list/${newContentId}`);
+
+    } catch (error) {
+        console.error("Failed to export to CMS:", error);
+        // Handle error state in UI if needed
+    } finally {
+        setIsExporting(false);
+        setExportStep(0);
+    }
   };
 
-  const showContent = loading || submittedPrompt || isExporting;
+  const showContent = loading || submittedPrompt || isExporting || cmsLink;
   const showImproveButton = prompt.length > 0 && !prompt.includes('\n');
   const allowGenerate = prompt.length > 150;
 
@@ -96,7 +126,7 @@ export default function Home() {
             !showContent && "items-center justify-center"
           )}
         >
-          {showContent && (
+          {showContent && !cmsLink && (
             <div className="flex-1 mb-4 p-4">
               <p className="text-sm text-muted-foreground mb-2">
                 {isExporting ? "Exporting Status:" : "Submitted Prompt:"}
