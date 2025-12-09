@@ -87,16 +87,21 @@ export default function Home() {
     setExportStep(1); // Generating folders....
 
     try {
-        // Count sections in the generated code
-        const sectionCount = (code.match(/<section/g) || []).length;
-        const numberOfFolders = sectionCount > 0 ? sectionCount : 1;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(code, 'text/html');
+        const appContainer = doc.querySelector('.app-container');
+        const sections = appContainer ? Array.from(appContainer.querySelectorAll('section')) : [];
+        const sectionIds = sections.map(section => section.id).filter(id => id);
 
-        const result = await exportToCms({
-          name: submittedPrompt.split('\n')[0] || "Generated Content",
-          numberOfFolders: numberOfFolders,
-        });
+        if (sectionIds.length === 0) {
+            // Fallback for when there are no sections with IDs.
+            const sectionCount = (code.match(/<section/g) || []).length;
+            const numberOfFolders = sectionCount > 0 ? sectionCount : 1;
+            const fallbackIds = Array.from({ length: numberOfFolders }, (_, i) => `${submittedPrompt.split('\n')[0] || "Generated Content"} - Section ${i + 1}`);
+            sectionIds.push(...fallbackIds);
+        }
 
-        const newContentId = result.id;
+        const result = await exportToCms({ sectionIds });
         
         setExportStep(2); // Exporting Content...
         
