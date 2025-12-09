@@ -91,26 +91,32 @@ export default function Home() {
         const doc = parser.parseFromString(code, 'text/html');
         const appContainer = doc.querySelector('.app-container');
         const sections = appContainer ? Array.from(appContainer.querySelectorAll('section')) : [];
-        const sectionIds = sections.map(section => section.id).filter(id => id);
+        const sectionIds = sections.reverse().map(section => section.id).filter(id => id);
 
         if (sectionIds.length === 0) {
             // Fallback for when there are no sections with IDs.
             const sectionCount = (code.match(/<section/g) || []).length;
-            const numberOfFolders = sectionCount > 0 ? sectionCount : 1;
-            const fallbackIds = Array.from({ length: numberOfFolders }, (_, i) => `${submittedPrompt.split('\n')[0] || "Generated Content"} - Section ${i + 1}`);
-            sectionIds.push(...fallbackIds);
+            if (sectionCount > 0 && submittedPrompt !== "Charity App Template") {
+                const fallbackIds = Array.from({ length: sectionCount }, (_, i) => `${submittedPrompt.split('\n')[0] || "Generated Content"} - Section ${i + 1}`);
+                sectionIds.push(...fallbackIds.reverse());
+            }
         }
 
-        const result = await exportToCms({ sectionIds });
-        
+        if (sectionIds.length > 0) {
+            const result = await exportToCms({ sectionIds });
+            setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
+        } else {
+            // If there are still no section IDs to process, we can skip the API call.
+            // For example, when "Testing UI" is shown and it has no sections.
+            // We can directly show a generic link or a message.
+             setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
+        }
+
         setExportStep(2); // Exporting Content...
         
         // Simulate some processing time for the second step
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        // In a real app, you might get a more specific ID back
-        // For now, we link to a generic content list area for demo.
-        setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
 
     } catch (error) {
         console.error("Failed to export to CMS:", error);
