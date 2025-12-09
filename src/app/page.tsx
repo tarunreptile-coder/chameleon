@@ -87,8 +87,13 @@ export default function Home() {
     setExportStep(1); // Generating folders....
 
     try {
+        // Count sections in the generated code
+        const sectionCount = (code.match(/<section/g) || []).length;
+        const numberOfFolders = sectionCount > 0 ? sectionCount : 1;
+
         const result = await exportToCms({
           name: submittedPrompt.split('\n')[0] || "Generated Content",
+          numberOfFolders: numberOfFolders,
         });
 
         const newContentId = result.id;
@@ -98,7 +103,9 @@ export default function Home() {
         // Simulate some processing time for the second step
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        setCmsLink(`https://app.onreptile.com/content-list/${newContentId}`);
+        // In a real app, you might get a more specific ID back
+        // For now, we link to a generic content list area for demo.
+        setCmsLink(`https://app.onreptile.com/organization/17877abd-6fdd-4103-b672-c97a429237f7/folder/c2e0bca5-4df0-4641-a211-5cf280116757`);
 
     } catch (error) {
         console.error("Failed to export to CMS:", error);
