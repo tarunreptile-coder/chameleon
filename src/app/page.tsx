@@ -34,6 +34,9 @@ export default function Home() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [isImproving, setIsImproving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportStep, setExportStep] = useState(0);
+  const [cmsLink, setCmsLink] = useState("");
 
   const handleGenerateCode = async () => {
     setLoading(true);
@@ -61,9 +64,28 @@ export default function Home() {
     setIsImproving(false);
   };
 
-  const showContent = loading || submittedPrompt;
+  const handleExport = async () => {
+    setIsExporting(true);
+    setExportStep(1); // Generating folders....
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setExportStep(2); // Exporting Content...
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsExporting(false);
+    setExportStep(0);
+    setCmsLink("https://example-cms.com/project/123");
+  };
+
+  const showContent = loading || submittedPrompt || isExporting;
   const showImproveButton = prompt.length > 0 && !prompt.includes('\n');
   const allowGenerate = prompt.length > 150;
+
+  const exportMessages = [
+    "",
+    "Generating folders....",
+    "Exporting Content...",
+  ];
 
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
@@ -76,8 +98,23 @@ export default function Home() {
         >
           {showContent && (
             <div className="flex-1 mb-4 p-4">
-              <p className="text-sm text-muted-foreground mb-2">Submitted Prompt:</p>
-              <p className="text-base">{submittedPrompt}</p>
+              <p className="text-sm text-muted-foreground mb-2">
+                {isExporting ? "Exporting Status:" : "Submitted Prompt:"}
+              </p>
+              <p className="text-base">
+                {isExporting ? exportMessages[exportStep] : submittedPrompt}
+              </p>
+            </div>
+          )}
+          {cmsLink && (
+            <div className="flex-1 mb-4 p-4">
+              <p className="text-sm text-muted-foreground mb-2">Export Complete!</p>
+              <p className="text-base">
+                Your project has been exported. You can access it here:{" "}
+                <a href={cmsLink} target="_blank" rel="noopener noreferrer" className="text-primary underline">
+                  {cmsLink}
+                </a>
+              </p>
             </div>
           )}
           <div
@@ -159,9 +196,9 @@ export default function Home() {
             </div>
           </div>
            {code && (
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleExport} disabled={isExporting}>
               <Upload className="mr-2 h-4 w-4" />
-              Export to CMS
+              {isExporting ? "Exporting..." : "Export to CMS"}
             </Button>
           )}
         </main>
