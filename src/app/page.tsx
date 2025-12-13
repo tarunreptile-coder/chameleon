@@ -26,9 +26,8 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable";
 import { cn } from "@/lib/utils";
-import { charityAppHtml } from "@/templates/charity_app";
 
-type Device = "iphone" | "pixel" | "testing";
+type Device = "iphone" | "pixel";
 
 export default function Home() {
   const [device, setDevice] = useState<Device>("iphone");
@@ -40,22 +39,6 @@ export default function Home() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportStep, setExportStep] = useState(0);
   const [cmsLink, setCmsLink] = useState("");
-
-  const isTestingUi = device === "testing";
-
-  useEffect(() => {
-    if (isTestingUi) {
-      setCode(charityAppHtml);
-      setSubmittedPrompt("Charity App Template");
-    } else {
-      // If switching away from testing UI, clear the code unless it was user-generated
-      if (submittedPrompt === "Charity App Template") {
-        setCode("");
-        setSubmittedPrompt("");
-      }
-    }
-  }, [device, isTestingUi, submittedPrompt]);
-
 
   const handleGenerateCode = async () => {
     setLoading(true);
@@ -174,10 +157,9 @@ export default function Home() {
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Enter a prompt to generate UI..."
               className={cn("pr-16 text-lg resize-none h-full")}
-              disabled={isTestingUi}
             />
             <div className="absolute bottom-3 right-3 flex items-center gap-2">
-              {showImproveButton && !isTestingUi && (
+              {showImproveButton && (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -190,9 +172,9 @@ export default function Home() {
               )}
               <Button
                 onClick={handleGenerateCode}
-                disabled={loading || !prompt || (showImproveButton && !allowGenerate) || isTestingUi}
+                disabled={loading || !prompt || (showImproveButton && !allowGenerate)}
                 className={cn(
-                  (loading || !prompt || (showImproveButton && !allowGenerate) || isTestingUi) 
+                  (loading || !prompt || (showImproveButton && !allowGenerate)) 
                     ? "bg-gray-400" 
                     : "btn-gradient",
                   "text-white px-4 py-2 rounded-full flex items-center gap-2"
@@ -215,13 +197,12 @@ export default function Home() {
               <SelectContent>
                 <SelectItem value="iphone">iPhone 17 Pro</SelectItem>
                 <SelectItem value="pixel">Google Pixel 9 Pro</SelectItem>
-                <SelectItem value="testing">Testing UI</SelectItem>
                 <SelectSeparator />
                 <SelectItem value="add-device" disabled>Add device</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className={cn("relative flex items-center justify-center", !isTestingUi && "h-[800px] w-[370px]")}>
+          <div className={cn("relative flex items-center justify-center h-[780px] w-[370px]")}>
             <div
               className={`absolute transition-all duration-300 ease-in-out ${
                 device === "iphone"
@@ -244,13 +225,8 @@ export default function Home() {
                 <DashboardUI code={code} loading={loading} />
               </PixelFrame>
             </div>
-            {isTestingUi && (
-              <div className="h-[780px] w-full rounded-lg border bg-background shadow-sm overflow-hidden">
-                <DashboardUI code={code} loading={loading} />
-              </div>
-            )}
           </div>
-           {(code || isTestingUi) && (
+           {code && (
             <Button variant="outline" onClick={handleExport} disabled={isExporting}>
               <Upload className="mr-2 h-4 w-4" />
               {isExporting ? "Exporting..." : "Export to CMS"}
@@ -261,5 +237,3 @@ export default function Home() {
     </ResizablePanelGroup>
   );
 }
-
-    
